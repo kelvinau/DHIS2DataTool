@@ -6,8 +6,6 @@ const qs = require('qs');
 // DHIS2DataTool
 const secret = require('../.key.json').CLIENT_SECRET;
 
-// TODO: This will be expired and require refresh
-let access_token = '46fae1df-fbfd-4880-89a7-1de3c493799f';
 
 //
 // TODO: To get the access_token for now...
@@ -23,10 +21,8 @@ let access_token = '46fae1df-fbfd-4880-89a7-1de3c493799f';
 // }).then((res) => res.text()).then((res) => console.log(res)).catch(e => console.log(e));
 
 router.post('/authorize', (req, res, next) => {
-  if (access_token) {
-    res.send(access_token);
-    return;
-  }
+
+  console.log(req);
   const URL = 'https://mfm.obgyn.ubc.ca/dhis/uaa/oauth/token';
   const data = qs.stringify({
     grant_type: 'password',
@@ -41,7 +37,6 @@ router.post('/authorize', (req, res, next) => {
     },
 
   }).then((response) => {
-    access_token = response.data.access_token;
     res.send(access_token);
   }).catch(({
     response
